@@ -14,8 +14,8 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-          <Route path="register" element={<AuthLayouts><RegisterPage /></AuthLayouts>} />
-          <Route path="email" element={<AuthLayouts><CheckEmailPage /></AuthLayouts>} />
+          <Route path="/register" element={<AuthLayouts><RegisterPage /></AuthLayouts>} />
+          <Route path="/email" element={<AuthLayouts><CheckEmailPage /></AuthLayouts>} />
           <Route path="/password" element={<AuthLayouts><CheckPasswordPage /></AuthLayouts>} />
           <Route path="/forgot-password" element={<AuthLayouts><ForgotPassword /></AuthLayouts>} />
           <Route path="/" element={<Home />}>
