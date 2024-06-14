@@ -7,9 +7,10 @@ import MessagePage from './components/MessagePage';
 import AuthLayouts from './layout';
 import ForgotPassword from './pages/ForgotPassword';
 
-const AppRouter = () => {
+const App = () => {
+  
   return (
-    <Router basename="/">
+    <Router>
       <Routes>
         <Route path="/register" element={<AuthLayouts><RegisterPage /></AuthLayouts>} />
         <Route path="/email" element={<AuthLayouts><CheckEmailPage /></AuthLayouts>} />
@@ -24,4 +25,4 @@ const AppRouter = () => {
   );
 };
 
-export default AppRouter;
+export default App;
