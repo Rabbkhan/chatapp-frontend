@@ -28,6 +28,7 @@ const Home = () => {
         dispatch(logout())
         navigate('/email')
       }
+      
       // console.log("Current user Details", response)
     } catch (error) {
       // toast.error(error?.response?.data?.message)
