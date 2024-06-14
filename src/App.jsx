@@ -9,7 +9,7 @@ import ForgotPassword from './pages/ForgotPassword';
 
 const AppRouter = () => {
   return (
-    <Router basename="/app">
+    <Router basename="/">
       <Routes>
         <Route path="/register" element={<AuthLayouts><RegisterPage /></AuthLayouts>} />
         <Route path="/email" element={<AuthLayouts><CheckEmailPage /></AuthLayouts>} />
