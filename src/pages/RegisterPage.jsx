@@ -55,7 +55,7 @@ const RegisterPage = () => {
     // const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/register`
 
 
-    const URL = `https://chatapp-backend-zx6f.onrender.com/api/register`
+    const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/register`
     try {
       const response = await axios.post(URL, data)
       

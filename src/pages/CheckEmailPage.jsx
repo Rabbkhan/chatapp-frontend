@@ -34,7 +34,7 @@ const CheckEmailPage = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    const URL = `https://chatapp-backend-zx6f.onrender.com/api/email`
+    const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/email`
 
     try {
       const response = await axios.post(URL, data)
