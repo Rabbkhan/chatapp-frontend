@@ -75,7 +75,7 @@ localStorage.clear()
             <Avatar
               width={30}
               height={30}
-              name={user.name}
+              name={user?.name}
               userId={user?._id}
             />
           </button>
