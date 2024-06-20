@@ -9,14 +9,20 @@ import Sidebar from '../components/Sidebar'
 import { io } from 'socket.io-client';
 
 const Home = () => {
-
   const user = useSelector(state => state?.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  console.log("redux user", user)
-  const fetchUserDetails = async () => {
 
+  useEffect(() => {
+    if (!user || !localStorage.getItem('token')) {
+      navigate('/email')  // Redirect to login page if not authenticated
+    } else {
+      fetchUserDetails()
+    }
+  }, [])
+
+  const fetchUserDetails = async () => {
     try {
       const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/user-details`
       const response = await axios({
@@ -28,62 +34,52 @@ const Home = () => {
         dispatch(logout())
         navigate('/email')
       }
-      
-      // console.log("Current user Details", response)
     } catch (error) {
-      // toast.error(error?.response?.data?.message)
       console.log('error', error)
     }
-
-
   }
 
   useEffect(() => {
-    fetchUserDetails()
+    const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
+      auth: {
+        token: localStorage.getItem('token')
+      }
+    })
+
+    socketConnection.on('onlineUser', (data) => {
+      console.log(data)
+      dispatch(setOnlineUser(data))
+    })
+
+    dispatch(setSocketConnection(socketConnection))
+
+    return () => {
+      socketConnection.disconnect()
+    }
   }, [])
-
-useEffect(()=>{
-const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL,{
-  auth:{
-      token: localStorage.getItem('token')
-  }
-})
-
-socketConnection.on('onlineUser',(data)=>{
-  console.log(data)
-  dispatch(setOnlineUser(data))
-})
-
-dispatch(setSocketConnection(socketConnection))
-
-return ()=>{
-  socketConnection.disconnect()
-}
-},[])
 
   const basePath = location.pathname === '/'
 
   return (
     <>
-       <div className='flex h-screen'>
-      <section className={`w-1/4 bg-white h-full `}>
-        <Sidebar />
-      </section>
+      <div className='flex h-screen'>
+        <section className={`w-1/4 bg-white h-full `}>
+          <Sidebar />
+        </section>
 
-      <section className={`w-full ${basePath && "hidden"}`}>
-        <MessagePage />
-      </section>
+        <section className={`w-full ${basePath && "hidden"}`}>
+          <MessagePage />
+        </section>
 
-      <div className={`w-full flex justify-center items-center mx-auto text-center flex-col gap-2 ${basePath ? "lg:flex" : "hidden"}`}>
-        <div>
-          <img src={Logo} width={400} alt='logo' />
-        </div>
-        <div>
-          <p className='text-2xl'>Select user to send message</p>
+        <div className={`w-full flex justify-center items-center mx-auto text-center flex-col gap-2 ${basePath ? "lg:flex" : "hidden"}`}>
+          <div>
+            <img src={Logo} width={400} alt='logo' />
+          </div>
+          <div>
+            <p className='text-2xl'>Select user to send message</p>
+          </div>
         </div>
       </div>
-    </div>
-
     </>
   )
 }
