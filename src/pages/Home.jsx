@@ -14,19 +14,19 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const checkUserAndFetchDetails = async () => {
-      if (!user || !localStorage.getItem('token')) {
-        navigate('/email'); // Redirect to login page if not authenticated
-      } else {
-        await fetchUserDetails();
-      }
-    };
+  // useEffect(() => {
+  //   const checkUserAndFetchDetails = async () => {
+  //     if (!user || !localStorage.getItem('token')) {
+  //       navigate('/email'); // Redirect to login page if not authenticated
+  //     } else {
+  //       await fetchUserDetails();
+  //     }
+  //   };
 
-    checkUserAndFetchDetails();
-  }, [user]);
+  //   checkUserAndFetchDetails();
+  // }, [user]);
 
-  const fetchUserDetails = async () => {
+  const fetchUserDetails = async() => {
     try {
       const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/user-details`;
       const response = await axios({
@@ -44,10 +44,16 @@ const Home = () => {
     }
   };
 
+  useEffect(()=>{
+    fetchUserDetails()
+  },[])
+
+  //socket connection
+
   useEffect(() => {
     const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
       auth: {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem('token')
       },
     });
 
@@ -61,7 +67,7 @@ const Home = () => {
     return () => {
       socketConnection.disconnect();
     };
-  }, [dispatch]);
+  }, []);
 
   const basePath = location.pathname === '/';
 
