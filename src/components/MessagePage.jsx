@@ -127,20 +127,20 @@ const MessagePage = () => {
       socketConnection.on('message', (data) => {
         setAllMessage(data);
       });
-      socketConnection.on('new message', (newMessage) => {
-        setAllMessage(prevMessages => [...prevMessages, newMessage]);
-      });
+      // socketConnection.on('new message', (newMessage) => {
+      //   setAllMessage(prevMessages => [...prevMessages, newMessage]);
+      // });
     }
 
-    // Cleanup event listeners on component unmount
-    return () => {
-      if (socketConnection) {
-        socketConnection.off('message-user');
-        socketConnection.off('message');
-        socketConnection.off('new message');
-      }
-    };
-  }, [socketConnection, params.userId]);
+    // // Cleanup event listeners on component unmount
+    // return () => {
+    //   if (socketConnection) {
+    //     socketConnection.off('message-user');
+    //     socketConnection.off('message');
+    //     socketConnection.off('new message');
+    //   }
+    // };
+  }, [socketConnection,params?.userId,user]);
 
   return (
     <div style={{ backgroundImage: `url(${wallpaper})` }} >

@@ -29,8 +29,9 @@ const Home = () => {
         url: URL,
         withCredentials: true
       })
-      dispatch(setUser(response?.data?.data))
-      if (response.data.logout) {
+      dispatch(setUser(response.data.data))
+
+      if (response.data.data.logout) {
         dispatch(logout())
         navigate('/email')
       }
@@ -62,18 +63,18 @@ const Home = () => {
 
   return (
     <>
-      <div className='flex h-screen'>
-        <section className={`w-1/4 bg-white h-full `}>
-          <Sidebar />
+      <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
+        <section className={`bg-white ${!basePath && "hidden"} lg:block`}>
+           <Sidebar/>
         </section>
 
-        <section className={`w-full ${basePath && "hidden"}`}>
+        <section className={`${basePath && "hidden"}`} >
           <MessagePage />
         </section>
 
-        <div className={`w-full flex justify-center items-center mx-auto text-center flex-col gap-2 ${basePath ? "lg:flex" : "hidden"}`}>
+        <div className={`justify-center items-center flex-col gap-2 hidden ${!basePath ? "hidden" : "lg:flex" }`}>
           <div>
-            <img src={Logo} width={400} alt='logo' />
+            <img src={Logo} width={250} alt='logo' />
           </div>
           <div>
             <p className='text-2xl'>Select user to send message</p>
