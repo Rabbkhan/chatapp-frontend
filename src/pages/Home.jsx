@@ -35,9 +35,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    
       fetchUserDetails()
-    
   }, [])
 
   useEffect(() => {
