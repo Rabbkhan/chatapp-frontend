@@ -14,7 +14,13 @@ const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
- 
+  useEffect(() => {
+    if (!user || !localStorage.getItem('token')) {
+      navigate('/email')  // Redirect to login page if not authenticated
+    } else {
+      fetchUserDetails()
+    }
+  }, [])
 
   const fetchUserDetails = async () => {
     try {
@@ -34,9 +40,7 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-      fetchUserDetails()
-  }, [])
+
 
   useEffect(() => {
     const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
