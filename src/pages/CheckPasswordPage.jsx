@@ -4,14 +4,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import uploadFile from '../helpers/upload';
 import axios from 'axios'
 import { FaRegCircleUser } from "react-icons/fa6";
-import toast, { Toaster } from 'react-hot-toast';
 import Avatar from '../components/Avatar';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../redux/userSlice';
+import toast from 'react-hot-toast';
 
 const CheckPasswordPage = () => {
   const [data, setData] = useState({
     password: "",
+    userId : ""
 
   });
 
@@ -22,7 +23,7 @@ const CheckPasswordPage = () => {
     if (!location?.state?.name) {
       navigate('/email');
     }
-  }, [location, navigate]);
+  }, []);
 
   // const basepath =location.pathname === '/'
   const handleOnChange = (e) => {
@@ -108,7 +109,6 @@ const CheckPasswordPage = () => {
 
 
           <button className='bg-primary text-lg px-4 py-2 text-white hover:bg-secondary rounded-sm mt-4 font-bold leading-relaxed tracking-wide'>Login</button>
-          <Toaster />
         </form>
 
         <p className='my-2'><Link to={'/forgot-password'} className='text-primary hover:underline font-semibold'>Forgot Password</Link></p>

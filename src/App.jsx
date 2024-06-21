@@ -6,10 +6,13 @@ import Home from './pages/Home';
 import MessagePage from './components/MessagePage';
 import AuthLayouts from './layout';
 import ForgotPassword from './pages/ForgotPassword';
+import toast, { Toaster } from 'react-hot-toast';
 
 const App = () => {
   
   return (
+    <>
+        <Toaster/>
     <Router>
       <Routes>
         <Route path="/register" element={<AuthLayouts><RegisterPage /></AuthLayouts>} />
@@ -22,6 +25,7 @@ const App = () => {
         {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>
     </Router>
+    </>
   );
 };
 
