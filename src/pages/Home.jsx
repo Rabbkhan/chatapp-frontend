@@ -35,11 +35,9 @@ const Home = () => {
   }
 
   useEffect(() => {
-    if (!user || !localStorage.getItem('token')) {
-      navigate('/email')  // Redirect to login page if not authenticated
-    } else {
+    
       fetchUserDetails()
-    }
+    
   }, [])
 
   useEffect(() => {
