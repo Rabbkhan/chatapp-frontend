@@ -38,12 +38,15 @@ const CheckPasswordPage = () => {
     const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/password`;
 
     try {
-      const response = await axios.post(URL, {
-        userId: location?.state?._id,
-        password: data.password
-      }, {
-        withCredentials: true
-      });
+      const response = await axios({
+        method :'post',
+        url : URL,
+        data : {
+          userId : location?.state?._id,
+          password : data.password
+        },
+        withCredentials : true
+      })
 
       toast.success(response.data.message);
 
@@ -59,10 +62,10 @@ const CheckPasswordPage = () => {
   };
 
   // Debugging logs
-  useEffect(() => {
-    console.log("location.state:", location.state);
-    console.log("data:", data);
-  }, [location, data]);
+  // useEffect(() => {
+  //   console.log("location.state:", location.state);
+  //   console.log("data:", data);
+  // }, [location, data]);
 
   return (
     <div className='mt-5'>
