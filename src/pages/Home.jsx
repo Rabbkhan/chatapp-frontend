@@ -40,6 +40,10 @@ const Home = () => {
     }
   }
 
+  useEffect(()=>{
+    fetchUserDetails()
+  },[])
+  
   useEffect(() => {
     const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
       auth: {
