@@ -14,51 +14,62 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // useEffect(() => {
-  //   const checkUserAndFetchDetails = async () => {
-  //     if (!user || !localStorage.getItem('token')) {
-  //       navigate('/email'); // Redirect to login page if not authenticated
-  //     } else {
-  //       await fetchUserDetails();
-  //     }
-  //   };
+  useEffect(() => {
+    const checkUserAndFetchDetails = async () => {
+      const token = localStorage.getItem('token');
+      if (!user || !token) {
+        console.log('User not authenticated, redirecting to /email');
+        navigate('/email'); // Redirect to login page if not authenticated
+      } else {
+        await fetchUserDetails();
+      }
+    };
 
-  //   checkUserAndFetchDetails();
-  // }, [user]);
+    checkUserAndFetchDetails();
+  }, [user]);
 
-  const fetchUserDetails = async() => {
+  const fetchUserDetails = async () => {
     try {
       const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/user-details`;
       const response = await axios({
         url: URL,
         withCredentials: true,
       });
+      console.log('Fetched user details:', response.data.data);
       dispatch(setUser(response.data.data));
 
       if (response.data.data.logout) {
+        console.log('User session expired, redirecting to /email');
         dispatch(logout());
         navigate('/email');
       }
     } catch (error) {
-      console.log('error', error);
+      console.error('Error fetching user details:', error.response ? error.response.data : error);
+      // Handle error - could be due to network issues or authentication issues
+      if (error.response && error.response.status === 401) {
+        console.log('Unauthorized, redirecting to /email');
+        dispatch(logout());
+        navigate('/email');
+      }
     }
   };
 
-  useEffect(()=>{
-    fetchUserDetails()
-  },[])
-
-  //socket connection
-
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No token found, redirecting to /email');
+      navigate('/email');
+      return;
+    }
+
     const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
       auth: {
-        token: localStorage.getItem('token')
+        token: token,
       },
     });
 
     socketConnection.on('onlineUser', (data) => {
-      console.log(data);
+      console.log('Online user data:', data);
       dispatch(setOnlineUser(data));
     });
 
@@ -67,7 +78,7 @@ const Home = () => {
     return () => {
       socketConnection.disconnect();
     };
-  }, []);
+  }, [dispatch, navigate]);
 
   const basePath = location.pathname === '/';
 
