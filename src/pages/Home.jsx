@@ -1,25 +1,23 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { logout, setOnlineUser, setSocketConnection, setUser } from '../redux/userSlice';
-import Logo from '../assets/logo.png';
-import MessagePage from '../components/MessagePage';
-import Sidebar from '../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
+import { setOnlineUser, setSocketConnection, setUser, logout } from '../redux/userSlice';
+import Logo from '../assets/logo.png'
 import { io } from 'socket.io-client';
-
+import axios from 'axios';
+import Sidebar from '../components/Sidebar'
+import MessagePage from '../components/MessagePage';
 const Home = () => {
   const user = useSelector(state => state?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const checkUserAndFetchDetails = async () => {
       const token = localStorage.getItem('token');
       if (!user || !token) {
         console.log('User not authenticated, redirecting to /email');
-        navigate('/email'); // Redirect to login page if not authenticated
+        navigate('/email');
       } else {
         await fetchUserDetails();
       }
@@ -31,10 +29,7 @@ const Home = () => {
   const fetchUserDetails = async () => {
     try {
       const URL = `${import.meta.env.VITE_APP_BACKEND_URL}/api/user-details`;
-      const response = await axios({
-        url: URL,
-        withCredentials: true,
-      });
+      const response = await axios.get(URL, { withCredentials: true });
       console.log('Fetched user details:', response.data.data);
       dispatch(setUser(response.data.data));
 
@@ -45,7 +40,6 @@ const Home = () => {
       }
     } catch (error) {
       console.error('Error fetching user details:', error.response ? error.response.data : error);
-      // Handle error - could be due to network issues or authentication issues
       if (error.response && error.response.status === 401) {
         console.log('Unauthorized, redirecting to /email');
         dispatch(logout());
@@ -63,9 +57,19 @@ const Home = () => {
     }
 
     const socketConnection = io(import.meta.env.VITE_APP_BACKEND_URL, {
-      auth: {
-        token: token,
-      },
+      auth: { token },
+    });
+
+    socketConnection.on('connect', () => {
+      console.log('WebSocket connected');
+    });
+
+    socketConnection.on('connect_error', (error) => {
+      console.error('WebSocket connection error:', error);
+    });
+
+    socketConnection.on('disconnect', (reason) => {
+      console.log('WebSocket disconnected:', reason);
     });
 
     socketConnection.on('onlineUser', (data) => {
@@ -79,7 +83,6 @@ const Home = () => {
       socketConnection.disconnect();
     };
   }, [dispatch, navigate]);
-
   const basePath = location.pathname === '/';
 
   return (

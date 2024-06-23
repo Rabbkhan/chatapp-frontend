@@ -61,12 +61,7 @@ const CheckPasswordPage = () => {
     }
   };
 
-  // Debugging logs
-  // useEffect(() => {
-  //   console.log("location.state:", location.state);
-  //   console.log("data:", data);
-  // }, [location, data]);
-
+  
   return (
     <div className='mt-5'>
       <div className='bg-white w-full max-w-md rounded overflow-hidden p-4 mx-auto'>

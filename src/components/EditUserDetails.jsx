@@ -66,13 +66,15 @@ const EditUserDetails = ({ onClose, user }) => {
       });
 
       // console.log('update user', response)
-      toast.success(response.data.message);
+      toast.success(response?.data?.message);
 
       if (response.data.success) {
         dispatch(setUser(response.data.data));
+
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      console.log(error)
+      toast.error();
     }
   };
 
@@ -89,7 +91,7 @@ const EditUserDetails = ({ onClose, user }) => {
               type='text'
               name='name'
               id='name'
-              value={data?.name}
+              value={data.name}
               onChange={handleOnChange}
               className='w-full px-2 focus:outline-primary border-0.5'
             />
