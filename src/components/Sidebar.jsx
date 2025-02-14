@@ -132,6 +132,7 @@ const Sidebar = () => {
           )}
 
           {allUser.map((conv, index) => {
+            console.log(`Conversation ${index}:`, conv); // Add logging here
             return (
               <NavLink
                 to={"/" + conv?.userDetails?._id}

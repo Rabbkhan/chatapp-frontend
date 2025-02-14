@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   setOnlineUser,
   setSocketConnection,
@@ -12,10 +12,12 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import MessagePage from "../components/MessagePage";
+
 const Home = () => {
-  const user = useSelector((state) => state?.user);
+  const user = useSelector(state => state?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkUserAndFetchDetails = async () => {
@@ -91,6 +93,7 @@ const Home = () => {
       socketConnection.disconnect();
     };
   }, [dispatch, navigate]);
+
   const basePath = location.pathname === "/";
 
   return (
