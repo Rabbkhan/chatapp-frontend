@@ -14,12 +14,12 @@ import { FaVideo } from "react-icons/fa6";
 import { logout } from "../redux/userSlice";
 
 const Sidebar = () => {
-  const user = useSelector((state) => state?.user);
+  const user = useSelector(state => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false);
   const [allUser, setAllUser] = useState([]);
   const [openSearchUser, setOpenSearchUser] = useState(false);
-  const socketConnection = useSelector(
-    (state) => state?.user?.socketConnection
+  const socketConnection = useSelector
+    (state => state?.user?.socketConnection
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
